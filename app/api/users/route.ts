@@ -6,7 +6,7 @@ export async function POST(request: Request) {
 
     try{
         const body = await request.json();
-        const serviceResult = await createUser(body.user);
+        const serviceResult = await createUser(body);
         return NextResponse.json(serviceResult, { status: 201 });
 
     } catch(error) {

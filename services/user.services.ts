@@ -12,6 +12,17 @@ export async function createUser(body: unknown) {
   }
 
   const hashedPassword = await bcrypt.hash(result.data.password, 10);
-  const user = await insertUser({ ...result.data, password: hashedPassword }); 
-  return user;
+  const data = {
+    first_name: result.data.firstName,
+    last_name: result.data.lastName,
+    email: result.data.email,
+    password: hashedPassword,
+  };
+
+  const { data: insertedData, error } = await insertUser(data);
+  if (error) {
+    throw new Error(error.message || "Erro ao salvar usuário");
+  }
+
+  return insertedData;
 }
