@@ -2,10 +2,12 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { Navbar } from "@/components";
 import { UserSchema } from "@/schemas/user";
 
 export default function SigninPage() {
+    const router = useRouter();
 
     const [formData, setFormData] = useState({
         firstName: "",
@@ -45,6 +47,11 @@ export default function SigninPage() {
             body: JSON.stringify(formData),
         });
 
+        if (!response.ok) {
+            alert("Houve um problema durante o login. Por favor, tente novamente.");
+            return;
+        }
+        router.push("/dashboard");
     }
 
     return (
