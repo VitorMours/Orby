@@ -4,11 +4,11 @@ import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Navbar } from "@/components";
-import { UserSchema } from "@/schemas/user";
+import { RegisterSchema } from "@/schemas/auth.schema";
 
 export default function SigninPage() {
     const router = useRouter();
-
+    const [loading, setLoading] = useState(false);
     const [formData, setFormData] = useState({
         firstName: "",
         lastName: "",
@@ -28,18 +28,21 @@ export default function SigninPage() {
     async function handleSubmit(event: React.SubmitEvent<HTMLFormElement>) {
 
         event.preventDefault();
+        setLoading(true);
         if(formData.password !== formData.confirmPassword){
             alert("Password does not match");
+            setLoading(false);
             return;
         }
         
-        const result = UserSchema.safeParse(formData);
+        const result = RegisterSchema.safeParse(formData);
         if(!result.success){
             console.log(result.error.flatten());
+            setLoading(false);
             return;
         }
 
-        const response = await fetch("/api/users", {
+        const response = await fetch("/api/auth/signin", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -49,6 +52,7 @@ export default function SigninPage() {
 
         if (!response.ok) {
             alert("Houve um problema durante o login. Por favor, tente novamente.");
+            setLoading(false);
             return;
         }
         router.push("/dashboard");
@@ -111,7 +115,7 @@ export default function SigninPage() {
                                 type="submit"
                                 className="btn btn-primary w-full mt-4"
                             >
-                                Sign up
+                                {loading ? <span className="loading loading-spinner"></span>: "Sign up"}
                             </button>
                         </form>
 

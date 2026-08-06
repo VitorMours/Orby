@@ -1,28 +1,40 @@
 import { supabase } from "@/config/supabase";
-import AuthRepository from "@/repositories/auth.repository";
-
+import { Login, Register } from "@/schemas/auth.schema";
+import UserService from "./user.service";
 
 class AuthService {
-    static repository: any;
 
-    public AuthService(authRepository: AuthRepository) {
-        AuthService.repository = authRepository;
+    public static async register(body: Register) {
+        const { data, error } = await supabase.auth.signUp({
+            email: body.email,
+            password: body.password
+        });
+        if(error) {
+            throw new Error(error.message);
+        }
+        const response = await UserService.createUser(body);
+        return response;
     }
 
+    public static async login(body: Login) {
+        const { data, error } = await supabase.auth.signInWithPassword({
+            email: body.email,
+            password: body.password
+        });
 
-    static async signup() {}
+        if(error) {
+            throw new Error(error.message);
+        }
 
-
-    static async login(email: string, password: string) {
-        await AuthService.repository.login(email, password);
+        if (!data.session || !data.user) {
+            throw new Error("Falha ao criar sessão de autenticação.");
+        }
+        return data;
     }
 
-    static async logout() {}
+    public static async logout() {}
 
-
-    static async validate() {}
-
-} 
-
+    public static async validate() {}
+}
 
 export default AuthService;

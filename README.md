@@ -7,3 +7,5 @@
     />
   </a>
 </p>
+
+O orby é uma ferramenta de organização laboral, com o objetivo de fornecer uma plataforma de gerenciamento de tarefas e necessidades organizacionais com maior facilidade, e maior agilidade para desenvolvedores, e trabalhadores que focam no desenvolvimento do ecossistema online.

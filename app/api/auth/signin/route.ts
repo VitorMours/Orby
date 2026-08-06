@@ -1,12 +1,11 @@
+import AuthService from "@/services/auth.service";
 import { NextResponse } from "next/server";
-import { UserSchema } from "@/schemas/user";
-import { createUser } from "@/services/user.services";
 
 export async function POST(request: Request) {
 
     try{
         const body = await request.json();
-        const serviceResult = await createUser(body);
+        const serviceResult = await AuthService.register(body);
         return NextResponse.json(serviceResult, { status: 201 });
 
     } catch(error) {
