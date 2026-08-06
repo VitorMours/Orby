@@ -1,12 +1,26 @@
 import { Session } from "@/schemas/token.schema";
+import { NextResponse } from "next/server";
 
 class TokenService {
+    public static extractToken(response: NextResponse, session: Session) {
+        if (!session?.access_token) {
+            return response;
+        }
 
-    public static validateToken() {}  
+        response.cookies.set("token", session.access_token, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === 'production',
+            sameSite: 'lax',
+            path: '/',
+            maxAge: 60 * 60 * 24 * 7, // 7 dias
+        });
 
-    public static extractToken(session: Session) {} // session: Session
+        return response;
+    }
 
-    public static updateToken() {}
-}   
+    public static validateToken() { }
+
+    public static updateToken() { }
+}
 
 export default TokenService;
