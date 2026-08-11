@@ -3,8 +3,8 @@
 import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { Navbar } from "@/components";
-import { RegisterSchema } from "@/schemas/auth.schema";
+import Navbar from "@/components/Navbar/Navbar";
+import { RegisterSchema } from "@/features/auth/auth.schema";
 
 export default function SigninPage() {
     const router = useRouter();
@@ -60,7 +60,6 @@ export default function SigninPage() {
 
     return (
         <>
-            <Navbar />
             <div className="flex flex-col items-center justify-center min-h-screen">
                 <div className="card w-1/4 h-1/2 shadow-sm rounded-lg bg-base-100">
                     <div className="card-body">

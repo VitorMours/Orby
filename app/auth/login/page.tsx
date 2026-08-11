@@ -1,10 +1,10 @@
 "use client";
 
 import { useState } from "react";
-import { Navbar } from "@/components";
+import Navbar from "@/components/Navbar/Navbar";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { LoginSchema } from "@/schemas/auth.schema";
+import { LoginSchema } from "@/features/auth/auth.schema";
 
 export default function LoginPage() {
     const router = useRouter();
@@ -48,8 +48,6 @@ export default function LoginPage() {
 
     return(
         <>
-            <Navbar />
-        
             <div className="flex flex-col items-center justify-center min-h-screen">
                 <div className="card w-1/4 h-1/2 shadow-sm rounded-lg bg-base-100">
                     <div className="card-body">

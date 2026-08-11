@@ -1,5 +1,5 @@
 import { supabase } from "@/config/supabase";
-import { CreateUser } from "@/schemas/user.schema";
+import { CreateUser } from "@/features/users/user.schema";
 
 export default class UserService {
   public static async createUser(body: CreateUser) {

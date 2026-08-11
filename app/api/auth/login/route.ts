@@ -1,8 +1,8 @@
-import { LoginSchema } from "@/schemas/auth.schema";
-import { Session } from "@/schemas/token.schema";
-import AuthService from "@/services/auth.service";
-import TokenService from "@/services/jwt.service";
 import { NextResponse } from "next/server";
+import AuthService from "@/features/auth/auth.service";
+import TokenService from "@/features/auth/jwt.service";
+import { Session } from "@/features/auth/token.schema";
+import { LoginSchema } from "@/features/auth/auth.schema";
 
 export async function POST(request: Request) {
     try {

@@ -1,6 +1,6 @@
 import { supabase } from "@/config/supabase";
-import { Login, Register } from "@/schemas/auth.schema";
-import UserService from "./user.service";
+import { Login, Register } from "./auth.schema";
+import UserService from "../users/user.service";
 
 class AuthService {
 
@@ -34,7 +34,15 @@ class AuthService {
 
     public static async logout() {}
 
-    public static async validate() {}
+    public static async validate() {
+        const { data: { session }, error } = await supabase.auth.getSession();
+        
+        if(!session) {
+            return false;
+        } else {
+            return session.expires_at;
+        }
+    }
 }
 
 export default AuthService;

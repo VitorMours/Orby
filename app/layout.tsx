@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import Navbar from "@/components/Navbar/Navbar";
+import Drawer from "@/components/Drawer/Drawer";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -23,7 +25,16 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       lang="en"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col bg-base-300">{children}</body>
+      <body className="flex flex-col bg-base-300">
+        <Navbar />
+        <div className="drawer md:hidden ">
+          <input type="checkbox" className="drawer-toggle" id="dashboard-drawer" />
+          <div className="drawer-content flex flex-col">
+            {children}
+          </div>
+          <Drawer />
+        </div>
+      </body>
     </html>
   );
 }

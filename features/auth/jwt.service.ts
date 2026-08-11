@@ -1,4 +1,4 @@
-import { Session } from "@/schemas/token.schema";
+import { Session } from "@/features/auth/token.schema";
 import { NextResponse } from "next/server";
 
 class TokenService {
