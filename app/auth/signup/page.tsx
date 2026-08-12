@@ -60,8 +60,8 @@ export default function SigninPage() {
 
     return (
         <>
-            <div className="flex flex-col items-center justify-center min-h-screen">
-                <div className="card w-1/4 h-1/2 shadow-sm rounded-lg bg-base-100">
+            <div className="flex flex-col items-center justify-center min-h-screen min-w-screen  px-4">
+                <div className="card w-3/4 md:w-1/2 lg:w-1/3 shadow-sm rounded-lg bg-base-100">
                     <div className="card-body">
                         <h2 className="card-title justify-center text-2xl font-bold mb-4">Sign in</h2>
                         <form className="flex flex-col gap-4" onSubmit={handleSubmit}>

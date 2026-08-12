@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { PanelLeftOpen } from "lucide-react";
+import ThemeToggle from "../ThemeToggle/ThemeToggle";
 
 
 function Navbar() {
@@ -12,7 +13,9 @@ function Navbar() {
                 <Link href="/" className="flex-1 md:flex-none btn btn-ghost text-xl">Orby</Link>
             </div>
 
+            <ThemeToggle/>
             <div className="hidden md:flex flex-none p-3 gap-3">
+                
                 <Link href="/auth/signup" className="rounded-md px-4 py-2 
                                                 transition-all duration-200 ease-in-out 
                                                 hover:bg-base-100">
