@@ -1,6 +1,7 @@
 import { supabase } from "@/config/supabase";
 import { Login, Register } from "./auth.schema";
 import UserService from "../users/user.service";
+import { User } from "@supabase/supabase-js";
 
 class AuthService {
 
@@ -32,16 +33,40 @@ class AuthService {
         return data;
     }
 
-    public static async logout() {}
-
-    public static async validate() {
-        const { data: { session }, error } = await supabase.auth.getSession();
-        
-        if(!session) {
-            return false;
-        } else {
-            return session.expires_at;
+    public static async logout() {
+        const { error } = await supabase.auth.signOut();
+        if (error) {
+            throw new Error(error.message);
         }
+    }
+
+    public static async validate(): Promise<User | null> {
+        const {
+            data: { session },
+            error,
+        } = await supabase.auth.getSession();
+
+        if (error) {
+            throw new Error(error.message);
+        }
+
+        return session?.user ?? null;
+    }
+
+    public static onAuthStateChange(
+        callback: (user: User | null) => void
+    ) {
+        const {
+            data: { subscription },
+        } = supabase.auth.onAuthStateChange(
+            (_event, session) => {
+                callback(session?.user ?? null);
+            }
+        );
+
+        return () => {
+            subscription.unsubscribe();
+        };
     }
 }
 

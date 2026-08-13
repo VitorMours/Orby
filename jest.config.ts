@@ -13,7 +13,7 @@ const config: Config = {
   ],
 
   moduleNameMapper: {
-    "^@/(.*)$": "<rootDir>/src/$1",
+    "^@/(.*)$": "<rootDir>/$1",
   },
 
   testPathIgnorePatterns: [

@@ -8,6 +8,7 @@ export default function ThemeToggle() {
         <button
             onClick={toggleTheme}
             className="btn btn-ghost btn-circle"
+            role="checkbox"
             aria-label="Alternar tema"
         >
             {theme === "light" ? (
