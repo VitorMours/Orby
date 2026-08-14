@@ -1,9 +1,44 @@
 import { NextResponse } from "next/server";
 import AuthService from "@/features/auth/auth.service";
-import TokenService from "@/features/auth/jwt.service";
 import { Session } from "@/features/auth/token.schema";
 import { LoginSchema } from "@/features/auth/auth.schema";
 
+/**
+ * Autentica um usuário através de suas credenciais.
+ *
+ * Recebe o email e a senha enviados no corpo da requisição,
+ * valida os dados utilizando o {@link LoginSchema} e delega
+ * o processo de autenticação ao {@link AuthService}.
+ *
+ * @route POST /api/auth/login
+ *
+ * @param request - Requisição HTTP contendo as credenciais do usuário
+ *                  no corpo em formato JSON.
+ *
+ * @returns Uma resposta HTTP contendo os dados da sessão e do usuário
+ *          autenticado.
+ *
+ * @throws {400} Quando os dados enviados não são válidos.
+ * @throws {500} Quando ocorre um erro durante o processo de autenticação.
+ *
+ * @example
+ * Requisição:
+ * ```json
+ * {
+ *   "email": "usuario@email.com",
+ *   "password": "123456"
+ * }
+ * ```
+ *
+ * @example
+ * Resposta de sucesso:
+ * ```json
+ * {
+ *   "user": {},
+ *   "session": {}
+ * }
+ * ```
+ */
 export async function POST(request: Request) {
     try {
         const body = await request.json();
@@ -16,7 +51,6 @@ export async function POST(request: Request) {
 
         const loginResult = await AuthService.login(parsedBody.data);
         const response = NextResponse.json(loginResult, { status: 200 });
-        return TokenService.extractToken(response, loginResult.session as Session);
     } catch (error) {
         return NextResponse.json(
             { error: error instanceof Error ? error.message : "Internal Server Error" },
