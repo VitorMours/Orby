@@ -39,18 +39,19 @@ export function AuthProvider({
             headers: {
                 "Content-Type": "application/json",
             },
+            credentials: "include",
             body: JSON.stringify(body),
         });
 
         const data = await response.json();
 
-        if (!response.ok) {
-            throw new Error(
-                data.error ?? "Erro ao realizar login."
-            );
+
+        if (!response.ok || data == null) {
+            setUser(null);
+            throw new Error(data?.error ?? "Erro ao realizar login.");
         }
 
-        setUser(data.user);
+        await validate();
     };
 
     /**
@@ -59,13 +60,14 @@ export function AuthProvider({
     const logout = async () => {
         const response = await fetch("/api/auth/logout", {
             method: "POST",
+            credentials: "include",
         });
 
-        const data = await response.json();
-
         if (!response.ok) {
+            const data = await response.json().catch(() => null);
+
             throw new Error(
-                data.error ?? "Erro ao realizar logout."
+                data?.error ?? "Erro ao realizar logout."
             );
         }
 
@@ -84,18 +86,15 @@ export function AuthProvider({
 
             const data = await response.json();
 
-            if (!response.ok) {
+            if (!response.ok || !data?.user) {
                 setUser(null);
                 return;
             }
 
-            setUser(data.user ?? null);
-        } catch (error) {
-            console.error(
-                "Erro ao validar autenticação:",
-                error
-            );
 
+            setUser(data.user);
+        } catch (error) {
+            console.error("Erro ao validar autenticação:", error);
             setUser(null);
         } finally {
             setLoading(false);

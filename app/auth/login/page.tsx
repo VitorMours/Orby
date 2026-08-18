@@ -4,88 +4,104 @@ import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { LoginSchema } from "@/features/auth/auth.schema";
+import useAuth from "@/context/auth-context";
 
 export default function LoginPage() {
     const router = useRouter();
+    const { login } = useAuth();
+
     const [loading, setLoading] = useState(false);
     const [formData, setFormData] = useState({
         email: "",
-        password: ""
+        password: "",
     });
 
-    async function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
+    function handleChange(
+        event: React.ChangeEvent<HTMLInputElement>
+    ) {
         const { name, value } = event.target;
-        setFormData(previousData => ({...previousData, [name]: value}));
+
+        setFormData((previousData) => ({
+            ...previousData,
+            [name]: value,
+        }));
     }
 
-    async function handleSubmit(event: React.SubmitEvent<HTMLFormElement>) {
+    async function handleSubmit(
+        event: React.SubmitEvent<HTMLFormElement>
+    ) {
         event.preventDefault();
-        setLoading(true);
 
         const schemaResult = LoginSchema.safeParse(formData);
-        if(!schemaResult.success) {
-            setLoading(false);
+
+        if (!schemaResult.success) {
             return;
         }
 
-        const response = await fetch("/api/auth/login", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(formData)
-        });
+        try {
+            setLoading(true);
 
-        if (response.ok) {
-            setLoading(false);
+            await login(schemaResult.data);
+
             router.push("/dashboard");
+        } catch (error) {
+            console.error("Erro ao realizar login:", error);
+        } finally {
+            setLoading(false);
         }
-
-        setLoading(false);      
-        return;
     }
 
-    return(
-        <>
-            <div className="flex flex-col items-center justify-center min-w-screen min-h-screen px-4">
-                <div className="card w-3/4 md:w-1/2 lg:w-1/3 shadow-sm rounded-lg bg-base-100">
-                    <div className="card-body">
-                        <h2 className="card-title justify-center text-2xl font-bold mb-4">Login</h2>
-                        <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
+    return (
+        <div className="flex flex-col items-center justify-center min-w-screen min-h-screen px-4">
+            <div className="card w-3/4 md:w-1/2 lg:w-1/3 shadow-sm rounded-lg bg-base-100">
+                <div className="card-body">
+                    <h2 className="card-title justify-center text-2xl font-bold mb-4">
+                        Login
+                    </h2>
 
-                            <input
-                                type="email"
-                                placeholder="Email"
-                                name="email"
-                                value={formData.email}
-                                onChange={handleChange} 
-                                className="input input-bordered w-full"
-                            />
-                            <input
-                                type="password"
-                                placeholder="Password"
-                                name="password"
-                                value={formData.password}
-                                onChange={handleChange} 
-                                className="input input-bordered w-full"
-                            />
-                            <Link href="/auth/signup" className="text-sm text-primary hover:underline self-end">
-                                Don't have an account? Sign up
-                            </Link>
-                            <button
-                                type="submit"
-                                className="btn btn-primary w-full mt-4"
-                            >
-                                {loading ? <span className="loading loading-spinner"></span> : "Log in"}
-                            </button>
-                        </form>
+                    <form
+                        className="flex flex-col gap-4"
+                        onSubmit={handleSubmit}
+                    >
+                        <input
+                            type="email"
+                            placeholder="Email"
+                            name="email"
+                            value={formData.email}
+                            onChange={handleChange}
+                            className="input input-bordered w-full"
+                        />
 
-                    </div>
+                        <input
+                            type="password"
+                            placeholder="Password"
+                            name="password"
+                            value={formData.password}
+                            onChange={handleChange}
+                            className="input input-bordered w-full"
+                        />
+
+                        <Link
+                            href="/auth/signup"
+                            className="text-sm text-primary hover:underline self-end"
+                        >
+                            Don't have an account? Sign up
+                        </Link>
+
+                        <button
+                            type="submit"
+                            disabled={loading}
+                            className="btn btn-primary w-full mt-4"
+                        >
+                            {loading ? (
+                                <span className="loading loading-spinner" />
+                            ) : (
+                                "Log in"
+                            )}
+                        </button>
+                    </form>
                 </div>
             </div>
-        
-        </>
-
+        </div>
     );
-
 }

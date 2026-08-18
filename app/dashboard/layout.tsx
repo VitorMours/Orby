@@ -20,10 +20,10 @@ export const metadata: Metadata = {
 
 export default function DashboardLayout({ children }: LayoutProps<"/dashboard">) {
   return (
-        <div className="drawer lg:drawer-open">
+        <div className="drawer h-screen lg:drawer-open">
           <input type="checkbox" className="drawer-toggle" id="dashboard-drawer" />
           <Drawer />
-          <div className="drawer-content flex flex-col">
+          <div className="drawer-content flex h-screen flex-col ">
             {children}
           </div>
         </div>

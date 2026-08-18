@@ -1,5 +1,5 @@
-import { supabase } from "@/config/supabase";
-import { Login, Register } from "./auth.schema";
+import { createSupabaseServer } from "@/config/supabase";
+import { Login, Register, Session } from "./auth.schema";
 import UserService from "../users/user.service";
 import { User } from "@supabase/supabase-js";
 
@@ -25,6 +25,7 @@ class AuthService {
      * @throws {Error} Quando ocorre uma falha durante o registro.
      */
     public static async register(body: Register) {
+        const supabase = await createSupabaseServer();
         const { data, error } = await supabase.auth.signUp({
             email: body.email,
             password: body.password
@@ -53,6 +54,7 @@ class AuthService {
      * ```
      */
     public static async login(body: Login) {
+        const supabase = await createSupabaseServer();
         const { data, error } = await supabase.auth.signInWithPassword({
             email: body.email,
             password: body.password
@@ -65,7 +67,10 @@ class AuthService {
         if (!data.session || !data.user) {
             throw new Error("Falha ao criar sessão de autenticação.");
         }
-        return data;
+        return {
+            user: data.user,
+            session: data.session,
+        };
     }
 
     /**
@@ -77,6 +82,7 @@ class AuthService {
      *
      */
     public static async logout() {
+        const supabase = await createSupabaseServer();
         const { error } = await supabase.auth.signOut();
         if (error) {
             throw new Error(error.message);
@@ -88,19 +94,20 @@ class AuthService {
      * estar logado dentro do sistema, ou não.
      * @since 13/08/2026
      * 
-     * @returns A sessão do usuário caso seja existente, ou nulo se não for existente.
+     * @returns A {@link Session} do usuário caso seja existente, ou nulo se não for existente.
      * @throws {Error} Quando persiste algum erro de autenticação e/ou autorização dentro do banco de dados
      */
-    public static async validate(): Promise<User | null> {
+    public static async getSession(): Promise<User | null> {
+        const supabase = await createSupabaseServer();
         const {
-            data: { session },
+            data: { user },
             error,
-        } = await supabase.auth.getSession();
+        } = await supabase.auth.getUser();
 
         if (error) {
             throw new Error(error.message);
         }
-        return session?.user ?? null;
+        return user;
     }
 }
 

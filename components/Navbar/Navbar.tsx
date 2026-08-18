@@ -6,7 +6,8 @@ import useAuth from "@/context/auth-context";
 import { useRouter } from "next/navigation";
 
 function Navbar() {
-    const { isAuthenticated, loading, logout } = useAuth();
+    const { user, isAuthenticated, loading, logout } = useAuth();
+
     const router = useRouter();
 
     const handleLogout = async () => {
@@ -30,19 +31,6 @@ function Navbar() {
             <ThemeToggle />
             {isAuthenticated ?
                 <div className="hidden md:flex flex-none p-3 gap-3">
-                    <Link href="/dashboard" className="rounded-md px-4 py-2 
-                                                    transition-all duration-200 ease-in-out 
-                                                    hover:bg-base-100">
-                        Dashboard
-                    </Link>
-                    <Link
-                        href="/dashboard/login"
-                        className="rounded-md px-4 py-2 
-                                transition-all duration-200 ease-in-out 
-                                hover:bg-base-100"
-                    >
-                        Settings
-                    </Link>
                     <button
                         onClick={handleLogout}
                         className="rounded-md px-4 py-2 

@@ -10,10 +10,8 @@ jest.mock("@/context/auth-context", () => ({
 const mockUseAuth = useAuth as jest.Mock;
 
 describe("Drawer", () => {
-
     beforeEach(() => {
         jest.clearAllMocks();
-
         mockUseAuth.mockReturnValue({
             user: null,
             isAuthenticated: false,

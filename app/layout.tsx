@@ -31,7 +31,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         <AuthProvider>
           <ThemeProvider>
             <Navbar />
-            <div className="drawer md:hidden ">
+            <div className="drawer md:hidden">
               <input type="checkbox" className="drawer-toggle" id="dashboard-drawer" />
               <Drawer />
             </div>
