@@ -91,7 +91,6 @@ export function AuthProvider({
                 return;
             }
 
-
             setUser(data.user);
         } catch (error) {
             console.error("Erro ao validar autenticação:", error);

@@ -36,10 +36,10 @@ export default function Drawer() {
                                     </button>
                                 </li>
                                 <li>
-                                    <button className="is-drawer-close:tooltip is-drawer-close:tooltip-right" data-tip="Todo">
+                                    <Link href="/dashboard/todo" className="is-drawer-close:tooltip is-drawer-close:tooltip-right" data-tip="Todo">
                                         <CheckSquare2 size={16} />
                                         <span className="is-drawer-close:hidden font-bold">Todo</span>
-                                    </button>
+                                    </Link>
                                 </li>
                                 <span className="divider p-0 m-0"></span>
                                 <li>
