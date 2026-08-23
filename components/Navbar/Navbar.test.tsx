@@ -63,11 +63,22 @@ describe("Navbar", () => {
         renderNavbar();
         expect(screen.getByRole("link", {name: "Sign up"})).toBeInTheDocument();
     });
+
+    it("Renderiza o botão de Cadastro", () => {
+        renderNavbar();
+        expect(screen.getByRole("link", {name: "Sign up"})).toBeInTheDocument();
+    });
     
     it("Aloca corretamente o path de sign up no botão", () => {
         renderNavbar();
         const signupLink = screen.getByRole("link", { name: "Sign up" });
         expect(signupLink).toHaveAttribute("href", "/auth/signup");
+    });
+
+    it("Deve existir o theme toggle dentro do navbar", () => {
+        renderNavbar();
+        const themeToggle = screen.getByRole("checkbox", {name: "Alternar tema"});
+        expect(themeToggle).toBeInTheDocument();
     });
 
     describe("Desktop", () => {
@@ -93,6 +104,13 @@ describe("Navbar", () => {
             const menuButton = screen.getByLabelText("open sidebar");
             expect(menuButton).toHaveClass("flex", "md:hidden");
         });
+
+        it("Theme toggle deve estar visivel", () => {
+            renderNavbar();
+            const themeToggle = screen.getByRole("checkbox", {"name": "Alternar tema"});
+            expect(themeToggle).toBeInTheDocument();
+            expect(themeToggle).toBeVisible();
+        });
     });
 
     describe("Mobile", () => {
@@ -106,6 +124,15 @@ describe("Navbar", () => {
         renderNavbar();
         const menuButton = screen.getByLabelText("open sidebar");
         expect(menuButton).toHaveAttribute("for", "dashboard-drawer");
+        });
+
+        //it("deve conter os links de redirecionamento do site", () => {});
+        
+        it("Theme toggle deve estar visivel", () => {
+            renderNavbar();
+            const themeToggle = screen.getByRole("checkbox", {"name": "Alternar tema"});
+            expect(themeToggle).toBeInTheDocument();
+            expect(themeToggle).toBeVisible();
         });
     });
 });
