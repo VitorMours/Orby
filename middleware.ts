@@ -1,21 +1,22 @@
 import { NextRequest, NextResponse } from "next/server";
+import { runMiddlewares } from "./middleware/compose";
 import { authMiddleware } from "./middleware/auth.middleware";
 import { logMiddleware } from "./middleware/log.middleware";
 
 export async function middleware(request: NextRequest) {
-    const pathName = request.nextUrl.pathname;
+  const pathname = request.nextUrl.pathname;
 
-  if (pathName.startsWith("/dashboard")) {
-    const authResult = await authMiddleware(request);
-    if (authResult.redirected) return authResult; // ou alguma flag sua
-    // aplica log em cima do response já com cookies refrescados
-    return authResult;
+  if (pathname.startsWith("/dashboard")) {
+    return runMiddlewares(request, [logMiddleware, authMiddleware]);
   }
 
-    if (pathName.startsWith("/public")) {
-        const log = await logMiddleware(request);
-        if (log) return log;
-    }
+  if (pathname.startsWith("/public")) {
+    return runMiddlewares(request, [logMiddleware]);
+  }
 
-    return NextResponse.next();
+  return NextResponse.next();
 }
+
+export const config = {
+  matcher: ["/((?!_next/static|_next/image|favicon.ico).*)"],
+};

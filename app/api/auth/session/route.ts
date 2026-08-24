@@ -1,4 +1,4 @@
-import AuthService from "@/features/auth/auth.service";
+import AuthService from "@/lib/auth/auth.service";
 import { NextResponse } from "next/server";
 
 /**

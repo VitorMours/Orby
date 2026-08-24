@@ -1,7 +1,7 @@
 // app/api/auth/logout/route.ts
 
 import { NextResponse } from "next/server";
-import AuthService from "@/features/auth/auth.service";
+import AuthService from "@/lib/auth/auth.service";
 
 export async function POST() {
     try {

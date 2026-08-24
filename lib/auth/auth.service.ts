@@ -1,4 +1,4 @@
-import { createSupabaseServer } from "@/config/supabase";
+import { createSupabaseServer } from "@/lib/supabase";
 import { Login, Register, Session } from "./auth.schema";
 import UserService from "../users/user.service";
 import { User } from "@supabase/supabase-js";

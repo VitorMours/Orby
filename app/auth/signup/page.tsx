@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { RegisterSchema } from "@/features/auth/auth.schema";
+import { RegisterSchema } from "@/lib/auth/auth.schema";
 
 export default function SigninPage() {
     const router = useRouter();

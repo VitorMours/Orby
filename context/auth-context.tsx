@@ -1,6 +1,6 @@
 "use client";
 
-import { Login } from "@/features/auth/auth.schema";
+import { Login } from "@/lib/auth/auth.schema";
 import { User } from "@supabase/supabase-js";
 import {
     useContext,

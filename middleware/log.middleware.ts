@@ -1,12 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
+import { MiddlewareFn } from "./types";
 
-export async function logMiddleware(
-    request: NextRequest
-): Promise<NextResponse | undefined> {
-
-    console.log(
-        `[${new Date().toISOString()}] ${request.method} ${request.nextUrl.pathname}`
-    );
-
-    return;
-}
+export const logMiddleware: MiddlewareFn = async (request: NextRequest, response: NextResponse) => {
+  console.log(`[${request.method}] ${request.nextUrl.pathname}`);
+  return { response, proceed: true };
+};

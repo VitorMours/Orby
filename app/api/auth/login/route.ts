@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
-import AuthService from "@/features/auth/auth.service";
-import { LoginSchema } from "@/features/auth/auth.schema";
+import AuthService from "@/lib/auth/auth.service";
+import { LoginSchema } from "@/lib/auth/auth.schema";
 
 /**
  * Autentica um usuário através de suas credenciais.
