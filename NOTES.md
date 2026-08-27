@@ -34,9 +34,13 @@ Para fazer a atualização dos tokens podemos:
 - Usar o mesmo método que o anterior, mas pro browser atualizar os tokens antigos.
 
 ### Métodos de Autenticação
+Quando vamos fazer a autenticação do usuário, diversos métodos podem ser utilizados, de forma que eles visam facilitar o entendimento e a forma como temos de entender o comportamento nosso sistema. Com isso, temos que os métodos e suas responsabilidades são:
 
+- ***getUser:*** Pega as últimas informações do usuário da parte de autenticação.
+- ***getSession:*** Pega os dados crus da sessão, de forma que todas as informações podem ser vistas
+- ***getClaims:*** Lê o access_token dentro do storage das páginas, e verifica o mesmo para que a autenticação seja feita
 
-
+Em resumo, vamos usar o ***getClaims*** para verificar a identidade do usuário, e o ***getUser*** quando precisamos atualizar os dados do usuário no client
 
 # Architectural Beaviour and Structure of Drag & Drop
 Como vamos usar o react flow como ferramenta principal de construcao dos stickers presentes dentro do nosso sistema de mural, podemos usar o mesmo para facilitar a forma como temos de cosntruir e posicionar nossos elementos presentes dentro do sistema e do mural, tanto de forma visual quando falamos do mural, como de forma a determinar as coordenadas de posicionamento e funcionamento dentro do banco de dados,quando falamos de posicoes espaciais dentroda interface.
