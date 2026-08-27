@@ -17,6 +17,7 @@ export const authMiddleware: MiddlewareFn = async (request: NextRequest, respons
         }
 
         const token = request.cookies.get("session_token")?.value;
+        
 
 
         return { response, proceed: true };
