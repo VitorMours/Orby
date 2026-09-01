@@ -33,7 +33,7 @@ describe("TodoItem", () => {
         render(<TodoItem {...defaultProps} />);
 
         expect(
-            screen.getByText("Estudar React")
+            screen.getByText("Estudar React:")
         ).toBeInTheDocument();
     });
 
@@ -122,7 +122,7 @@ describe("TodoItem", () => {
             />
         );
 
-        expect(screen.getByText("Comprar pão")).toBeInTheDocument();
+        expect(screen.getByText("Comprar pão:")).toBeInTheDocument();
         expect(
             screen.getByText("Comprar pão integral")
         ).toBeInTheDocument();

@@ -43,7 +43,7 @@ describe("Todo", () => {
             </Todo>
         );
 
-        expect(screen.getByText("Estudar React")).toBeInTheDocument();
+        expect(screen.getByText("Estudar React:")).toBeInTheDocument();
         expect(
             screen.getByText("Estudar React Testing Library")
         ).toBeInTheDocument();
