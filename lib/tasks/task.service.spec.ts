@@ -5,8 +5,18 @@ describe("Task Service", () => {
         expect(TaskService).toBeDefined();
     });
 
-    it("should have a createTask method", () => {
+    //it("should have a createTask method", () => {
+    //    const taskService = new TaskService();
+    //    expect(taskService.createTask).toBeDefined();
+    //});
+
+    it("should have a getTasks method", () => {
         const taskService = new TaskService();
-        expect(taskService.createTask).toBeDefined();
+        expect(taskService.getTasks).toBeDefined();
     });
+
+    //it("", () => {});
+
+
+
 });

@@ -8,6 +8,6 @@ export const UserSchema = z.object({
 });
 
 export const CreateUserSchema = UserSchema.omit({ id: true });
-
+// Need to create the user id type.
 export type CreateUser = z.infer<typeof CreateUserSchema>;
 export type User = z.infer<typeof UserSchema>;
