@@ -1,5 +1,5 @@
 "use client";
-
+import { useState } from "react";
 import { Pencil, Trash2 } from "lucide-react";
 
 interface TodoItemProps {
@@ -12,15 +12,13 @@ interface TodoItemProps {
     onDelete?: () => void;
 }
 
-const TodoItem = ({
-    id,
-    title,
-    content,
-    conclusionStatus,
-    onChange,
-    onEdit,
-    onDelete,
-}: TodoItemProps) => {
+const TodoItem = ({ id, title, content, conclusionStatus, onChange, onEdit, onDelete }: TodoItemProps) => {
+
+    const [editMode, setEditMode] = useState(false);
+
+    //const onEdit = () => setEditMode(!editMode);
+
+
     return (
         <li className="flex items-center justify-between gap-4 p-4">
             <label
@@ -37,6 +35,7 @@ const TodoItem = ({
                 />
 
                 <span>
+                    {editMode ? <><strong>{title}:</strong> {content}</> : <input type="text" placeholder="Type here" className="input input-ghost" />}
                     <strong>{title}:</strong> {content}
                 </span>
             </label>

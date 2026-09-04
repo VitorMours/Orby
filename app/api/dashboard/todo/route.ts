@@ -1,3 +1,4 @@
+import TaskService from "@/lib/tasks/task.service";
 import { NextResponse } from "next/server";
 
 
@@ -11,8 +12,9 @@ import { NextResponse } from "next/server";
  */
 export async function GET(request: Request) {
     try {
-        return NextResponse.json({ status: 200 });
-    
+        const tasks = await TaskService.getTasks();
+        console.log(tasks);
+        return NextResponse.json({ status: 200, data: tasks });
     
     } catch (error) {
         return NextResponse.json(
@@ -25,4 +27,9 @@ export async function GET(request: Request) {
             { status: 500 }
         );
     }
+}
+
+
+export async function POST(request: Request) {
+
 }

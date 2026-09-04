@@ -1,4 +1,4 @@
-import { CreateUserSchema, UserSchema } from "./user.schema";
+import { CreateUserSchema, UserIdSchema, UserSchema } from "./user.schema";
 
 const validUser = {
     id: "0fa0f072-4263-4df9-ab36-2618d804c02a",
@@ -21,6 +21,10 @@ describe("UserSchema", () => {
 
         it("should have CreateUserSchema defined", () => {
             expect(CreateUserSchema).toBeDefined();
+        });
+
+        it("Should have UserIDSchema defined", () => {
+            expect(UserIdSchema).toBeDefined();
         });
     });
 

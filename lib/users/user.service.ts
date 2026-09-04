@@ -28,5 +28,18 @@ export default class UserService {
 
 
   public static async updateUserById(userId: string, body: Partial<CreateUser>) {
+    const supabase = await createSupabaseServer();
+    const { data, error } = await supabase
+      .from("users")
+      .update(body)
+      .eq("id", userId)
+      .select()
+      .single();
+
+    if(error) {
+      throw new Error(error.message);
+    }
+
+    return data;
   }
 }
