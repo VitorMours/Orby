@@ -36,20 +36,18 @@ describe("Task Service", () => {
     });
 
     it("should have a createTask method", () => {
-        const taskService = new TaskService();
-        expect(taskService.createTask).toBeDefined();
+        expect(TaskService.createTask).toBeDefined();
     });
 
     it("should have a getTasks method", () => {
-        const taskService = new TaskService();
-        expect(taskService.getTasks).toBeDefined();
+        expect(TaskService.getTasks).toBeDefined();
     });
 
     describe("getTasks", () => {
         it("should return all tasks", async () => {
             mockListSelect.mockResolvedValue({ data: [task], error: null });
 
-            const tasks = await new TaskService().getTasks();
+            const tasks = await TaskService.getTasks();
 
             expect(tasks).toEqual([task]);
             expect(mockFrom).toHaveBeenCalledWith("tasks");
@@ -62,7 +60,7 @@ describe("Task Service", () => {
                 error: { message: "Unable to load tasks" },
             });
 
-            await expect(new TaskService().getTasks()).rejects.toThrow("Unable to load tasks");
+            await expect(TaskService.getTasks()).rejects.toThrow("Unable to load tasks");
         });
     });
 
@@ -70,7 +68,7 @@ describe("Task Service", () => {
         it("should create and return a task", async () => {
             mockSingle.mockResolvedValue({ data: task, error: null });
 
-            const createdTask = await new TaskService().createTask(task);
+            const createdTask = await TaskService.createTask(task);
 
             expect(createdTask).toEqual(task);
             expect(mockFrom).toHaveBeenCalledWith("tasks");
@@ -85,7 +83,7 @@ describe("Task Service", () => {
                 error: { message: "Unable to create task" },
             });
 
-            await expect(new TaskService().createTask(task)).rejects.toThrow("Unable to create task");
+            await expect(TaskService.createTask(task)).rejects.toThrow("Unable to create task");
         });
     });
 
@@ -93,7 +91,7 @@ describe("Task Service", () => {
         it("should update and return a task", async () => {
             mockSingle.mockResolvedValue({ data: task, error: null });
 
-            const updatedTask = await new TaskService().updateTask("task-id", task);
+            const updatedTask = await TaskService.updateTask("task-id", task);
 
             expect(updatedTask).toEqual(task);
             expect(mockFrom).toHaveBeenCalledWith("tasks");
@@ -110,7 +108,7 @@ describe("Task Service", () => {
                 error: { message: "Unable to update task" },
             });
 
-            await expect(new TaskService().updateTask("task-id", { name: "Updated task" }))
+            await expect(TaskService.updateTask("task-id", { name: "Updated task" }))
                 .rejects.toThrow("Unable to update task");
         });
     });

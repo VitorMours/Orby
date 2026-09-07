@@ -24,10 +24,10 @@ export default function Drawer() {
                                     </button>
                                 </li>
                                 <li>
-                                    <button className="is-drawer-close:tooltip is-drawer-close:tooltip-right" data-tip="Notes">
+                                    <Link href="/dashboard/notes" className="is-drawer-close:tooltip is-drawer-close:tooltip-right" data-tip="Notes">
                                         <NotebookTextIcon size={16} />
                                         <span className="is-drawer-close:hidden font-bold">Notes</span>
-                                    </button>
+                                    </Link>
                                 </li>
                                 <li>
                                     <button className="is-drawer-close:tooltip is-drawer-close:tooltip-right" data-tip="Sticks">
