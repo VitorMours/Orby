@@ -1,4 +1,5 @@
-import { NoteSchema, NoteUpdateSchema, NoteCreateSchema } from "./note.schema";
+import { ZodError, ZodUUID } from "zod";
+import { NoteSchema, NoteUpdateSchema, NoteCreateSchema, Note } from "./note.schema";
 
 describe("Note Schema", () => {
 
@@ -14,17 +15,20 @@ describe("Note Schema", () => {
         expect(NoteCreateSchema).toBeDefined();
     });
 
-    // describe("NoteSchema", () => {
-    //     it("Should be able to create notes from schema", () => {
-            
-
-    //     });
+    describe("NoteSchema", () => {
+        it("Should be able to validate notes with schema", () => {
+            const note: Note = {title:"asd", content:"asd"};
+            const parse = NoteSchema.parse(note);
+            expect(parse.title).toBe(note.title);
+            expect(parse.content).toBe(note.title);
+        });
         
-    //     it("Should be able to validate notes with schema", () => {
-
-
-    //     });
-    // });
+        it("Should be able to raise error missing title data", () => {
+            const note: Note = {title:"", content:"asd"};
+            expect(() => NoteSchema.safeParse(note)).toThrow(ZodError);
+            
+        });
+    });
 
 
 });

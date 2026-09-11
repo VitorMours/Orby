@@ -5,4 +5,4 @@ CREATE TABLE public.notes(
     createdAt TIMESTAMP DEFAULT NOW(),
     updatedAt TIMESTAMP DEFAULT  NOW(),
     owner uuid REFERENCES auth.users(id) ON DELETE CASCADE
-);
+);  

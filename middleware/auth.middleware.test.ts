@@ -1,3 +1,8 @@
+jest.mock("next/server", () => ({
+    NextRequest: class NextRequest {},
+    NextResponse: class NextResponse {},
+}));
+
 import { authMiddleware } from "./auth.middleware";
 import { MiddlewareFn } from "./types";
 

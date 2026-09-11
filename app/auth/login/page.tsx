@@ -43,7 +43,8 @@ export default function LoginPage() {
 
             await login(schemaResult.data);
 
-            router.push("/dashboard");
+            const nextPath = new URLSearchParams(window.location.search).get("next");
+            router.push(nextPath?.startsWith("/") ? nextPath : "/dashboard");
         } catch (error) {
             console.error("Erro ao realizar login:", error);
         } finally {
