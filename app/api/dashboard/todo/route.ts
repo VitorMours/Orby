@@ -1,4 +1,5 @@
 import TaskService from "@/lib/tasks/task.service";
+import AuthService from "@/lib/auth/auth.service";
 import { NextResponse } from "next/server";
 
 
@@ -12,8 +13,12 @@ import { NextResponse } from "next/server";
  */
 export async function GET(request: Request) {
     try {
-        const tasks = await TaskService.getTasks();
-        console.log(tasks);
+        const user = await AuthService.getSession();
+        if (!user) {
+            return NextResponse.json({ message: "Usuário não autenticado" }, { status: 401 });
+        }
+
+        const tasks = await TaskService.getTasks(user.id);
         return NextResponse.json({ status: 200, data: tasks });
     
     } catch (error) {

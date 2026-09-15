@@ -26,7 +26,6 @@ export default class UserService {
     return data[0];
   }
 
-
   public static async updateUserById(userId: string, body: Partial<CreateUser>) {
     const supabase = await createSupabaseServer();
     const { data, error } = await supabase
@@ -39,7 +38,7 @@ export default class UserService {
     if(error) {
       throw new Error(error.message);
     }
-
+    
     return data;
   }
 }

@@ -1,4 +1,3 @@
-import { ZodError, ZodUUID } from "zod";
 import { NoteSchema, NoteUpdateSchema, NoteCreateSchema, Note } from "./note.schema";
 
 describe("Note Schema", () => {
@@ -20,12 +19,12 @@ describe("Note Schema", () => {
             const note: Note = {title:"asd", content:"asd"};
             const parse = NoteSchema.parse(note);
             expect(parse.title).toBe(note.title);
-            expect(parse.content).toBe(note.title);
+            expect(parse.content).toBe(note.content);
         });
         
         it("Should be able to raise error missing title data", () => {
             const note: Note = {title:"", content:"asd"};
-            expect(() => NoteSchema.safeParse(note)).toThrow(ZodError);
+            expect(NoteSchema.safeParse(note).success).toBe(false);
             
         });
     });

@@ -1,4 +1,5 @@
 import AuthService from "@/lib/auth/auth.service";
+import { RegisterSchema } from "@/lib/auth/auth.schema";
 import { NextResponse } from "next/server";
 
 /**
@@ -38,8 +39,15 @@ import { NextResponse } from "next/server";
 export async function POST(request: Request) {
     try {
         const body = await request.json();
+        const parsedBody = RegisterSchema.safeParse(body);
+        if (!parsedBody.success) {
+            return NextResponse.json(
+                { errors: parsedBody.error.flatten() },
+                { status: 400 },
+            );
+        }
 
-        const serviceResult = await AuthService.register(body);
+        const serviceResult = await AuthService.register(parsedBody.data);
 
         return NextResponse.json(
             serviceResult,

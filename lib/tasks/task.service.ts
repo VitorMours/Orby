@@ -1,40 +1,56 @@
 import { createSupabaseServer } from "../supabase";
-import { CreateTask, Task } from "./task.schema";
+import { CreateTask, TaskRecord, TaskRecordSchema, UpdateTask } from "./task.schema";
 
 
+
+/**
+ * Service do banco de dados focado em criar, deletar, atualizar
+ * e usar as tasks criadas pelo usuário, de forma fácil e 
+ * rápida, tanto nas rotas presentes 
+ * como em outras rotas que temos dentro do sistema
+ */
 export default class TaskService {
 
-    public static async getTasks(): Promise<Task[]> {
+
+    /**
+     * Serviço focado em pegar as tasks do usuário, com o 
+     * objetivo do mesmo ter acesso a elas, e poder fazer uma 
+     * listagem das mesmas 
+     * 
+     * @returns Promise<Task[]>
+     * 
+     */
+    public static async getTasks(id: string): Promise<TaskRecord[]> {
         const supabase = await createSupabaseServer();
-        const { data, error } = await supabase.from("tasks").select("*");
+        const { data, error } = await supabase.from("todo").select("*").eq("owner", id);
 
         if(error) {
             throw new Error(error.message);
         }
 
-        return data as Task[];
+        return TaskRecordSchema.array().parse(data);
 
     }
 
-    public static async createTask(task: CreateTask): Promise<Task> {
+    public static async createTask(task: CreateTask): Promise<TaskRecord> {
         const supabase = await createSupabaseServer();
-        const { data, error } = await supabase.from("tasks").insert(task).select().single();
+        const { data, error } = await supabase.from("todo").insert(task).select().single();
         
         if(error) {
             throw new Error(error.message);
         }
 
-        return await data as Task;    
+        return TaskRecordSchema.parse(data);
     }
 
-    public static async updateTask(taskId: string, task: Partial<CreateTask>): Promise<Task> {
+    public static async updateTask(taskId: string, task: UpdateTask): Promise<TaskRecord> {
         const supabase = await createSupabaseServer();
-        const { data, error } = await supabase.from("tasks").update(task).eq("id", taskId).select().single();
+        const { data, error } = await supabase.from("todo").update(task).eq("id", taskId).select().single();
         
         if(error) {
             throw new Error(error.message);
         }
 
-        return await data as Task;
+        return TaskRecordSchema.parse(data);
     }
 }

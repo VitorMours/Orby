@@ -1,0 +1,47 @@
+{
+  "version": "5",
+  "specifiers": {
+    "jsr:@deno/installer-shell-setup@*": "0.3.4"
+  },
+  "jsr": {
+    "@deno/installer-shell-setup@0.3.4": {
+      "integrity": "48665d1a737d487cce6874bc97bba70a5aeffa7053aca3f60df93c6fab8963b4"
+    }
+  },
+  "workspace": {
+    "packageJson": {
+      "dependencies": [
+        "npm:@reduxjs/toolkit@^2.12.0",
+        "npm:@supabase/ssr@~0.12.5",
+        "npm:@supabase/supabase-js@^2.112.0",
+        "npm:@tailwindcss/postcss@^4.3.3",
+        "npm:@testing-library/jest-dom@7",
+        "npm:@testing-library/react@^16.3.2",
+        "npm:@types/bcrypt@6",
+        "npm:@types/jest@30",
+        "npm:@types/node@20",
+        "npm:@types/react-dom@19",
+        "npm:@types/react@19",
+        "npm:bcrypt@6",
+        "npm:daisyui@^5.7.15",
+        "npm:eslint-config-next@16.3.0",
+        "npm:eslint@9",
+        "npm:jest-environment-jsdom@^30.4.1",
+        "npm:jest@^30.4.2",
+        "npm:lucide-react@^1.30.0",
+        "npm:next@16.3.0",
+        "npm:react-dom@19.2.8",
+        "npm:react-markdown@^10.1.0",
+        "npm:react-redux@^9.3.0",
+        "npm:react@19.2.8",
+        "npm:redux-core@~0.1.1",
+        "npm:supabase@^2.111.0",
+        "npm:tailwindcss@^4.3.3",
+        "npm:ts-jest@^29.4.12",
+        "npm:ts-node@^10.9.2",
+        "npm:typescript@5",
+        "npm:zod@^4.4.3"
+      ]
+    }
+  }
+}
