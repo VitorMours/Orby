@@ -8,6 +8,7 @@ export const UserSchema = z.object({
     email: z.email("email is required")
 });
 export const CreateUserSchema = UserSchema.omit({ id: true });
+
 export const UserRecordSchema = UserSchema.extend({
     createdAt: z.string().datetime({ local: true }).nullable(),
     updatedAt: z.string().datetime({ local: true }).nullable(),
@@ -16,4 +17,4 @@ export const UserRecordSchema = UserSchema.extend({
 // Need to create the user id type.
 export type UserID = z.infer<typeof UserIdSchema>;
 export type CreateUser = z.infer<typeof CreateUserSchema>;
-export type User = z.infer<typeof UserSchema>;
+export type User = z.infer<typeof UserRecordSchema>;

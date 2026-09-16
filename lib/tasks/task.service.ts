@@ -1,8 +1,6 @@
 import { createSupabaseServer } from "../supabase";
 import { CreateTask, TaskRecord, TaskRecordSchema, UpdateTask } from "./task.schema";
 
-
-
 /**
  * Service do banco de dados focado em criar, deletar, atualizar
  * e usar as tasks criadas pelo usuário, de forma fácil e 
@@ -10,7 +8,6 @@ import { CreateTask, TaskRecord, TaskRecordSchema, UpdateTask } from "./task.sch
  * como em outras rotas que temos dentro do sistema
  */
 export default class TaskService {
-
 
     /**
      * Serviço focado em pegar as tasks do usuário, com o 
@@ -29,7 +26,6 @@ export default class TaskService {
         }
 
         return TaskRecordSchema.array().parse(data);
-
     }
 
     public static async createTask(task: CreateTask): Promise<TaskRecord> {
