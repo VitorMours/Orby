@@ -1,19 +1,20 @@
 import { z } from "zod";
 
-
-// TODO: Correct the schemas and create the tests
-const StickRecordSchema = z.object({
-    id: z.string(),
+export const StickSchema = z.object({
     name:  z.string(),
     description: z.string(),
     positionX: z.number(),
     positionY: z.number(),
     sizeWidth: z.number(),
     sizeHeight: z.number(),
+});
+
+export const StickRecordSchema = StickSchema.extend({
+    id: z.string(),
     createdAt: z.string(),
     updatedAt: z.string(),
     owner: z.string(),
 });
 
-
-const StickCreateSchema = z.object({});
+export type StickRecord = z.infer<typeof StickRecordSchema>;
+export type Stick = z.infer<typeof StickSchema>;
