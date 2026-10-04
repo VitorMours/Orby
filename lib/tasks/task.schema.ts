@@ -11,7 +11,7 @@ export const CreateTaskSchema = z.object({
     content: z.string().max(100, "content is too long").nullable().optional(),
 });
     
-export const UpdateTaskSchema = TaskSchema.omit({conclusionStatus: true}).partial().refine(
+export const UpdateTaskSchema = TaskSchema.partial().refine(
     (task) => Object.keys(task).length > 0,
     "at least one task field is required",
 );

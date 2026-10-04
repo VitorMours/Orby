@@ -6,12 +6,14 @@ const mockCreateSelect = jest.fn();
 const mockSingle = jest.fn();
 const mockInsert = jest.fn();
 const mockUpdate = jest.fn();
+const mockDelete = jest.fn();
 const mockEq = jest.fn();
 const mockListEq = jest.fn();
 const mockFrom = jest.fn(() => ({
     select: mockListSelect,
     insert: mockInsert,
     update: mockUpdate,
+    delete: mockDelete,
 }));
 
 jest.mock("@/lib/supabase", () => ({
@@ -35,6 +37,7 @@ describe("Task Service", () => {
         jest.clearAllMocks();
         mockInsert.mockReturnValue({ select: mockCreateSelect });
         mockUpdate.mockReturnValue({ eq: mockEq });
+        mockDelete.mockReturnValue({ eq: mockEq });
         mockEq.mockReturnValue({ select: mockCreateSelect });
         mockListSelect.mockReturnValue({ eq: mockListEq });
         mockCreateSelect.mockReturnValue({ single: mockSingle });
@@ -77,11 +80,11 @@ describe("Task Service", () => {
         it("should create and return a task", async () => {
             mockSingle.mockResolvedValue({ data: task, error: null });
 
-            const createdTask = await TaskService.createTask(task);
+            const createdTask = await TaskService.createTask(ownerId, task);
 
             expect(createdTask).toEqual(task);
             expect(mockFrom).toHaveBeenCalledWith("todo");
-            expect(mockInsert).toHaveBeenCalledWith(task);
+            expect(mockInsert).toHaveBeenCalledWith({ ...task, owner: ownerId });
             expect(mockCreateSelect).toHaveBeenCalledWith();
             expect(mockSingle).toHaveBeenCalledWith();
         });
@@ -92,7 +95,7 @@ describe("Task Service", () => {
                 error: { message: "Unable to create task" },
             });
 
-            await expect(TaskService.createTask(task)).rejects.toThrow("Unable to create task");
+            await expect(TaskService.createTask(ownerId, task)).rejects.toThrow("Unable to create task");
         });
     });
 
@@ -100,11 +103,11 @@ describe("Task Service", () => {
         it("should update and return a task", async () => {
             mockSingle.mockResolvedValue({ data: task, error: null });
 
-            const updatedTask = await TaskService.updateTask("task-id", { title: task.title });
+            const updatedTask = await TaskService.updateTask(ownerId, "task-id", { title: task.title });
 
             expect(updatedTask).toEqual(task);
             expect(mockFrom).toHaveBeenCalledWith("todo");
-            expect(mockUpdate).toHaveBeenCalledWith({ title: task.title });
+            expect(mockUpdate).toHaveBeenCalledWith(expect.objectContaining({ title: task.title }));
             expect(mockEq).toHaveBeenCalledWith("id", "task-id");
             expect(mockCreateSelect).toHaveBeenCalledWith();
             expect(mockSingle).toHaveBeenCalledWith();
@@ -117,7 +120,7 @@ describe("Task Service", () => {
                 error: { message: "Unable to update task" },
             });
 
-            await expect(TaskService.updateTask("task-id", { title: "Updated task" }))
+            await expect(TaskService.updateTask(ownerId, "task-id", { title: "Updated task" }))
                 .rejects.toThrow("Unable to update task");
         });
     });

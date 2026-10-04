@@ -9,14 +9,15 @@ interface TodoItemProps {
     conclusionStatus: boolean;
     onChange: (checked: boolean) => void;
     onEdit?: () => void;
+    editing?: boolean;
+    onSaveEdit?: (title: string, content: string) => void;
+    onCancelEdit?: () => void;
     onDelete?: () => void;
 }
 
-const TodoItem = ({ id, title, content, conclusionStatus, onChange, onEdit, onDelete }: TodoItemProps) => {
-
-    const [editMode, setEditMode] = useState(false);
-
-    //const onEdit = () => setEditMode(!editMode);
+const TodoItem = ({ id, title, content, conclusionStatus, onChange, onEdit, editing = false, onSaveEdit, onCancelEdit, onDelete }: TodoItemProps) => {
+    const [draftTitle, setDraftTitle] = useState(title);
+    const [draftContent, setDraftContent] = useState(content);
 
 
     return (
@@ -34,20 +35,27 @@ const TodoItem = ({ id, title, content, conclusionStatus, onChange, onEdit, onDe
                     onChange={(event) => onChange(event.target.checked)}
                 />
 
-                <span>
-                    {editMode ? <><strong>{title}:</strong> {content}</> : <input type="text" placeholder="Type here" className="input input-ghost" />}
-                    <strong>{title}:</strong> {content}
-                </span>
+                {editing ? (
+                    <span className="flex flex-1 gap-2">
+                        <input aria-label="Título da tarefa" className="input input-sm" value={draftTitle} onChange={(event) => setDraftTitle(event.target.value)} />
+                        <input aria-label="Conteúdo da tarefa" className="input input-sm" value={draftContent} onChange={(event) => setDraftContent(event.target.value)} />
+                    </span>
+                ) : (
+                    <span><strong>{title}:</strong> {content}</span>
+                )}
             </label>
 
             <div className="flex gap-2">
-                <button
-                    type="button"
-                    aria-label={`Editar tarefa ${title}`}
-                    onClick={onEdit}
-                >
-                    <Pencil size={18} />
-                </button>
+                {editing ? (
+                    <>
+                        <button type="button" aria-label={`Salvar tarefa ${title}`} onClick={() => onSaveEdit?.(draftTitle, draftContent)}>Salvar</button>
+                        <button type="button" aria-label={`Cancelar edição da tarefa ${title}`} onClick={onCancelEdit}>Cancelar</button>
+                    </>
+                ) : (
+                    <button type="button" aria-label={`Editar tarefa ${title}`} onClick={onEdit}>
+                        <Pencil size={18} />
+                    </button>
+                )}
 
                 <button
                     type="button"

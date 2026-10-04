@@ -28,9 +28,13 @@ export default class TaskService {
         return TaskRecordSchema.array().parse(data);
     }
 
-    public static async createTask(task: CreateTask): Promise<TaskRecord> {
+    public static async createTask(ownerId: string, task: CreateTask): Promise<TaskRecord> {
         const supabase = await createSupabaseServer();
-        const { data, error } = await supabase.from("todo").insert(task).select().single();
+        const { data, error } = await supabase
+            .from("todo")
+            .insert({ ...task, owner: ownerId })
+            .select()
+            .single();
         
         if(error) {
             throw new Error(error.message);
@@ -39,14 +43,33 @@ export default class TaskService {
         return TaskRecordSchema.parse(data);
     }
 
-    public static async updateTask(taskId: string, task: UpdateTask): Promise<TaskRecord> {
+    public static async updateTask(ownerId: string, taskId: string, task: UpdateTask): Promise<TaskRecord> {
         const supabase = await createSupabaseServer();
-        const { data, error } = await supabase.from("todo").update(task).eq("id", taskId).select().single();
+        const { data, error } = await supabase
+            .from("todo")
+            .update({ ...task, updatedAt: new Date().toISOString() })
+            .eq("id", taskId)
+            .eq("owner", ownerId)
+            .select()
+            .single();
         
         if(error) {
             throw new Error(error.message);
         }
 
         return TaskRecordSchema.parse(data);
+    }
+
+    public static async deleteTask(ownerId: string, taskId: string): Promise<void> {
+        const supabase = await createSupabaseServer();
+        const { error } = await supabase
+            .from("todo")
+            .delete()
+            .eq("id", taskId)
+            .eq("owner", ownerId);
+
+        if (error) {
+            throw new Error(error.message);
+        }
     }
 }
