@@ -54,7 +54,7 @@ export default class TaskService {
             .single();
         
         if(error) {
-            throw new Error(error.message);
+            throw new Error("Unable to update task");
         }
 
         return TaskRecordSchema.parse(data);

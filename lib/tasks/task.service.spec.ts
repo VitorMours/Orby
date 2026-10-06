@@ -8,6 +8,7 @@ const mockInsert = jest.fn();
 const mockUpdate = jest.fn();
 const mockDelete = jest.fn();
 const mockEq = jest.fn();
+const mockEqOwner = jest.fn();
 const mockListEq = jest.fn();
 const mockFrom = jest.fn(() => ({
     select: mockListSelect,
@@ -38,7 +39,8 @@ describe("Task Service", () => {
         mockInsert.mockReturnValue({ select: mockCreateSelect });
         mockUpdate.mockReturnValue({ eq: mockEq });
         mockDelete.mockReturnValue({ eq: mockEq });
-        mockEq.mockReturnValue({ select: mockCreateSelect });
+        mockEq.mockReturnValue({ eq: mockEqOwner, select: mockCreateSelect });
+        mockEqOwner.mockReturnValue({ select: mockCreateSelect });
         mockListSelect.mockReturnValue({ eq: mockListEq });
         mockCreateSelect.mockReturnValue({ single: mockSingle });
     });
@@ -109,6 +111,7 @@ describe("Task Service", () => {
             expect(mockFrom).toHaveBeenCalledWith("todo");
             expect(mockUpdate).toHaveBeenCalledWith(expect.objectContaining({ title: task.title }));
             expect(mockEq).toHaveBeenCalledWith("id", "task-id");
+            expect(mockEqOwner).toHaveBeenCalledWith("owner", ownerId);
             expect(mockCreateSelect).toHaveBeenCalledWith();
             expect(mockSingle).toHaveBeenCalledWith();
 
@@ -122,6 +125,28 @@ describe("Task Service", () => {
 
             await expect(TaskService.updateTask(ownerId, "task-id", { title: "Updated task" }))
                 .rejects.toThrow("Unable to update task");
+        });
+    });
+
+    describe("deleteTask", () => {
+        it("should delete a task", async () => {
+            mockEqOwner.mockResolvedValue({ data: null, error: null });
+
+            await TaskService.deleteTask(ownerId, "task-id");
+
+            expect(mockFrom).toHaveBeenCalledWith("todo");
+            expect(mockDelete).toHaveBeenCalledWith();
+            expect(mockEq).toHaveBeenCalledWith("id", "task-id");
+            expect(mockEqOwner).toHaveBeenCalledWith("owner", ownerId);
+        });
+
+        it("should throw when deletion fails", async () => {
+            mockEqOwner.mockResolvedValue({
+                data: null,
+                error: { message: "Unable to delete task" },
+            });
+
+            await expect(TaskService.deleteTask(ownerId, "task-id")).rejects.toThrow("Unable to delete task");
         });
     });
 });
