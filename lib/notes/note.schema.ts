@@ -10,10 +10,12 @@ export const NoteCreateSchema = z.object({
     title: NoteFieldsSchema.shape.title,
     content: NoteFieldsSchema.shape.content.optional(),
 });
+
 export const NoteUpdateSchema = NoteFieldsSchema.partial().refine(
     (note) => Object.keys(note).length > 0,
     "at least one note field is required",
 );
+
 export const NoteRecordSchema = NoteFieldsSchema.extend({
     id: z.uuid(),
     createdAt: z.string().datetime({ local: true }),
